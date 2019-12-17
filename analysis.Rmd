@@ -1,0 +1,64 @@
+---
+title: "Height And Weight Dataset"
+author: "Anant Sharma"
+date: "12/17/2019"
+output: html_document
+---
+
+## 1) Loading the data
+
+  ```{r direc}
+    setwd('C:/Users/Anant Sharma/Desktop/DATA SCIENCE/Practice/Hight weight dataset')
+    data<-read.csv("weight-height.csv")
+  ```
+  
+## 2) Exploratory Analysis
+
+There is a linear relationship between height and weight which is shown by the following scatterplot. 
+
+  ```{r plot1}
+    library(ggplot2)
+    g<-ggplot(data=data,aes(x=Weight,y=Height))
+    g+geom_point()+geom_smooth(method='lm')
+  ```
+  
+The following boxplots shows that male tend to have more height and weight than female.
+
+  ```{r plot2}
+    g<-ggplot(data=data,aes(x=Gender,y=Weight))
+    g+geom_boxplot()
+    
+    f<-ggplot(data=data,aes(x=Gender,y=Height))
+    f+geom_boxplot()
+  ```  
+  
+## 3) Fitting the model
+
+We would use linear regression for this data and we would be prediciting weight using height and gender.
+
+  
+## 3.1) Splitting the data
+
+  ```{r split}
+    library(caret)
+    intrain<-createDataPartition(y=data$Weight,p=0.7,list=FALSE)
+    train<-data[intrain,]
+    test<-data[-intrain,]
+  ```
+  
+## 3.2) Model fitting
+  ```{r fit}
+    fit<-lm(Weight~.,data=train)
+    pre<-predict(fit,test)
+    library(MLmetrics)
+    MSE(pre,test$Weight)
+  ```
+We get an mse of 100 approx.
+
+
+    
+    
+  
+  
+  
+  
